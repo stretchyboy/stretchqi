@@ -27,9 +27,14 @@
   
   $oBoard = new xiangqi();
   $oBoard->parseNotation($sText, $sNotation);
-  $oRender = $oBoard->getRenderer();
   
+  
+  $oRender = $oBoard->getRenderer();
   $sBoard = $oRender->getHTML();
+  
+  $oRender2 = $oBoard->getRenderer('text');
+  $sBoard .= '<br /><br />'.$oRender2->getHTML();
+  
   
   ?>
   <body>
