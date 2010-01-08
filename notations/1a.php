@@ -14,10 +14,4 @@
 			"cannon"   => array('C','C'),
 			"soldier"     => array('S','S'),
 			);
-		
-		
-		function getText($oMove)
-		{
-		  
-		}
 	}
