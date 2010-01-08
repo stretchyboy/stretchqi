@@ -17,11 +17,11 @@
 		
 	  function getHTML()
 	  {
-	    $sBoardPath = 'boards/1/';
+	    //$sBoardPath = 'boards/1/';
 	    $sPiecePath = 'pieces/1/';
-	    $sSpecs = file_get_contents($sBoardPath.'board.json', FILE_TEXT);
+	    //$sSpecs = file_get_contents($sBoardPath.'board.json', FILE_TEXT);
 	    //echo "\n<br><pre>\nsSpecs  =" .$sSpecs ."</pre>";
-	    $aSpecs = json_decode($sSpecs);
+	    //$aSpecs = json_decode($sSpecs);
 	    //echo "\n<br><pre>\naSpecs  =" .var_export($aSpecs , TRUE)."</pre>";
 	    
 	    $sHTML = '<table><tr><th>&nbsp;</th>
@@ -35,12 +35,12 @@
 	    <th>h</th>
 	    <th>i</th></tr>';
 	    
-	    $iStepX = ( $aSpecs->right - $aSpecs->left ) / 9;
-	    $iPieceWidth = $iStepX * 0.5;
-	    $iStartX = $aSpecs->left;// - (0.5 * $iPieceWidth);
+	    //$iStepX = ( $aSpecs->right - $aSpecs->left ) / 9;
+	    //$iPieceWidth = $iStepX * 0.5;
+	    //$iStartX = $aSpecs->left;// - (0.5 * $iPieceWidth);
 	    
-	    $iStepY = ( $aSpecs->bottom - $aSpecs->top ) / 10;
-	    $iStartY = $aSpecs->top;// - (0.5 * $iPieceWidth);
+	    //$iStepY = ( $aSpecs->bottom - $aSpecs->top ) / 10;
+	    //$iStartY = $aSpecs->top;// - (0.5 * $iPieceWidth);
 	    
 	    for ($k = 0; $k < 10; $k++)
 			{
