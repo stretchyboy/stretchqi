@@ -10,9 +10,9 @@
 			"horse"    => array('H','H'),
 			"elephant" => array('E','E'),
 			"advisor"  => array('A','A'),
-			"king"     => array('G','G'),
+			"general"     => array('G','G'),
 			"cannon"   => array('C','C'),
-			"pawn"     => array('S','S'),
+			"soldier"     => array('S','S'),
 			);
 		
 		

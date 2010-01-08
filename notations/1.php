@@ -10,9 +10,9 @@
 			//"horse"    => array('馬','馬'), //Second traditional notation from wikipedia other red is 傌
 			"elephant" => array('象','相'),
 			"advisor"  => array('士','仕'),
-			"king"     => array('將','帥'),
+			"general"     => array('將','帥'),
 			"cannon"   => array('砲','炮'),
-			"pawn"     => array('卒','兵'),
+			"soldier"     => array('卒','兵'),
 			);
 		
 		/*//Simplified
