@@ -39,6 +39,11 @@
 		  }
 		}
 		
+		function getPieceLetter($sName, $sColor)
+		{
+		  return $this->aPieces[$sName][$sColor == 'black'?0:1];
+		}
+		
 		function getMoves($sText)
 		{
 		  $aTexts = $this->splitMoveText($sText);
@@ -81,6 +86,7 @@
 		
 		function parseMove($sText, $sColor)
 		{
+		  //echo "\n<br><pre>\nsText =" .$sText."</pre>";
 		  $aMatches = null;
 		 // preg_match_all('/(.?)\s+\(([0-9])([0-9])\)\-([0-9])([0-9])/', $sText, $aMatches);
 		  preg_match('/(.*)\s+\(([0-9])([0-9])\)\-([0-9])([0-9])/', $sText, $aMatches);
@@ -96,35 +102,63 @@
 		  {
 		    //echo "not matched";
 		  }
-		  //move($sPiece, $oFormerPosition, $oNewPosition, $sColor = null, $iPieceID = null)
 		  
-		  if($sColor == 'Black')
-		  {
-        $oFormerPosition = new position($aMatches[2] - 1, $aMatches[3] - 1);
-        $oNewPosition = new position($aMatches[4] - 1, $aMatches[5] - 1);
-      }
-      else
-      {
-        $oFormerPosition = new position(10 - $aMatches[2], 9 - $aMatches[3]);
-        $oNewPosition = new position(10 - $aMatches[4], 9 - $aMatches[5]);
-      }
-      
+		  $oFormerPosition = new position($this->getPos('row', $aMatches[2], $sColor), $this->getPos('col', $aMatches[3], $sColor));
+      $oNewPosition = new position($this->getPos('row', $aMatches[4], $sColor), $this->getPos('col', $aMatches[5], $sColor));
+		  
 		  $oMove = new move($sPiece, $oFormerPosition, $oNewPosition, $sColor);
+		  $this->getText($oMove);
 		  return $oMove;
 		}
 		
 		function getText($oMove)
 		{
+		  $sMove  = $this->getPieceLetter($oMove->sPiece, $oMove->sColor). " ";
+		  $sMove .= '('.$this->getLabel('row', $oMove->oFormerPosition->iRow, $oMove->sColor);
+		  $sMove .= $this->getLabel('col', $oMove->oFormerPosition->iColumn, $oMove->sColor).')-';
 		  
+		  $sMove .= $this->getLabel('row', $oMove->oNewPosition->iRow, $oMove->sColor);
+		  $sMove .= $this->getLabel('col', $oMove->oNewPosition->iColumn, $oMove->sColor);
+		  //echo "\n<br><pre>\ngetText sMove  =" .$sMove ."</pre>";
+		  
+			return $sMove;
 		}
 		
 		function getLabel($sAxis, $iPos, $sColor = "Black")
 		{
-		  
+		  if($sColor == 'Black')
+		  {
+        return $iPos + 1;
+      }
+      else
+      {
+        if($sAxis =='row')
+        {
+          return 10 - $iPos;
+        }
+        else
+        {
+          return 9 - $iPos;
+        }
+      }
 		}
 		
 		function getPos($sAxis, $sLabel, $sColor = "Black")
 		{
-		  
+		  if($sColor == 'Black')
+		  {
+        return $sLabel - 1;
+      }
+      else
+      {
+        if($sAxis =='row')
+        {
+          return 10 - $sLabel;
+        }
+        else
+        {
+          return 9 - $sLabel;
+        }
+      }
 		}
 	}

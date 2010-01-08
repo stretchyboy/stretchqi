@@ -24,16 +24,13 @@
 	    //$aSpecs = json_decode($sSpecs);
 	    //echo "\n<br><pre>\naSpecs  =" .var_export($aSpecs , TRUE)."</pre>";
 	    
-	    $sHTML = '<table><tr><th>&nbsp;</th>
-	    <th>a</th>
-	    <th>b</th>
-	    <th>c</th>
-	    <th>d</th>
-	    <th>e</th>
-	    <th>f</th>
-	    <th>g</th>
-	    <th>h</th>
-	    <th>i</th></tr>';
+	    $sHTML = '<table>';
+	    $sHTML .= '<tr><th>&nbsp;</th>';
+	    for ($m = 0; $m < 9; $m++)
+			{
+			  $sHTML .= '<th style="color:red;">'.$this->oNotation->getLabel('col', $m, "Red").'</th>';
+			}
+	    $sHTML .= '<th>&nbsp;</th></tr>';
 	    
 	    //$iStepX = ( $aSpecs->right - $aSpecs->left ) / 9;
 	    //$iPieceWidth = $iStepX * 0.5;
@@ -44,7 +41,7 @@
 	    
 	    for ($k = 0; $k < 10; $k++)
 			{
-			  $sHTML .= '<tr><th>'.($k+1).'</th>';
+			  $sHTML .= '<tr><th style="color:red;" >'.$this->oNotation->getLabel('row', $k, "Red").'</th>';
 				for ($m = 0; $m < 9; $m++)
 				{
 				  $sHTML .= '<td>';
@@ -55,10 +52,17 @@
 				    $sHTML .= '<img src="'.$sPiecePath.$sName.'"/>'."\n";
 				  }
 				  $sHTML .= '&nbsp;</td>';
-				  
 				}
-				$sHTML .= '</tr>';
+				$sHTML .= '<th>'.$this->oNotation->getLabel('row', $k, "Black").'</th></tr>';
 			}
+			
+			$sHTML .= '<tr><th>&nbsp;</th>';
+	    for ($m = 0; $m < 9; $m++)
+			{
+			  $sHTML .= '<th>'.$this->oNotation->getLabel('col', $m, "Black").'</th>';
+			}
+	    $sHTML .= '<th>&nbsp;</th></tr>';
+			
 			$sHTML .= '</table>';
 			return $sHTML;
 	  }
