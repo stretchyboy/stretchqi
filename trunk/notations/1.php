@@ -26,7 +26,7 @@
 			"pawn"     => array('卒','兵'),
 			);*/
 			
-		function notation_1()
+		function __construct()
 		{
 		  $this->aPieceNames = array(
 		                        'Black' => array(),

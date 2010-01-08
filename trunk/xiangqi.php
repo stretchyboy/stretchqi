@@ -12,7 +12,7 @@
     var $pieceMap = array();
     
     
-    function xiangqi()
+    function __construct()
     {
       $this->reset();
     }

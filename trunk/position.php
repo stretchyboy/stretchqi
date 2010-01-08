@@ -5,7 +5,7 @@
 		var $iRow;
 		var $iColumn;
 
-		function position($iRow, $iColumn)
+		function __construct($iRow, $iColumn)
 		{
 			$this->iRow = $iRow;
 			$this->iColumn = $iColumn;

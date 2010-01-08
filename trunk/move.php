@@ -7,7 +7,7 @@
 		var $sColor = null;
 		var $iPieceID = null;
 		
-		function move($sPiece, $oFormerPosition, $oNewPosition, $sColor = null, $iPieceID = null)
+		function __construct($sPiece, $oFormerPosition, $oNewPosition, $sColor = null, $iPieceID = null)
 		{
 			$this->sPiece = $sPiece;
 			$this->oFormerPosition = $oFormerPosition;

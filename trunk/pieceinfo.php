@@ -8,7 +8,7 @@
 
 		var $captured = false;
 
-		function PieceInfo($type, $color, $position)
+		function __construct($type, $color, $position)
 		{
 			$this->type = $type;
 			$this->color = $color;
