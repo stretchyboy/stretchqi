@@ -15,10 +15,17 @@
 		  $this->pieceMap = $pieceMap;
 		}
 		
+		function getPieceHTML($oPiece)
+		{
+		  $sPiecePath = 'pieces/1/';
+	    $sName = ($oPiece->color=='Black'?'b':'r').$oPiece->type.'.png';
+			return '<img src="'.$sPiecePath.$sName.'"/>'."\n";
+
+		}
+		
 	  function getHTML()
 	  {
 	    //$sBoardPath = 'boards/1/';
-	    $sPiecePath = 'pieces/1/';
 	    //$sSpecs = file_get_contents($sBoardPath.'board.json', FILE_TEXT);
 	    //echo "\n<br><pre>\nsSpecs  =" .$sSpecs ."</pre>";
 	    //$aSpecs = json_decode($sSpecs);
@@ -48,8 +55,9 @@
 				  $oPiece = $this->pieceMap[$k][$m];
 				  if($oPiece)
 				  {
-				    $sName = ($oPiece->color=='Black'?'b':'r').$oPiece->type.'.png';
-				    $sHTML .= '<img src="'.$sPiecePath.$sName.'"/>'."\n";
+				    $sHTML .= $this->getPieceHTML($oPiece);
+//				    $sName = ($oPiece->color=='Black'?'b':'r').$oPiece->type.'.png';
+//				    $sHTML .= '<img src="'.$sPiecePath.$sName.'"/>'."\n";
 				  }
 				  $sHTML .= '&nbsp;</td>';
 				}
