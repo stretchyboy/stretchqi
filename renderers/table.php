@@ -18,7 +18,7 @@
 		{
 		  $sPiecePath = 'pieces/1/';
 	    $sName = ($oPiece->color=='Black'?'b':'r').$oPiece->type.'.png';
-			return '<img src="'.$sPiecePath.$sName.'"/>'."\n";
+			return '<img src="'.$sPiecePath.$sName.'" alt="'.$this->oNotation->getPieceLetter($oPiece->type, $oPiece->color).'" title="'.ucwords($oPiece->type).' ('.$this->oNotation->getPieceLetter($oPiece->type, $oPiece->color).')"/>'."\n";
 		}
 		
 	  function getHTML()
