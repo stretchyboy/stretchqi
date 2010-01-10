@@ -27,24 +27,12 @@
   require_once('renderer.php');
   
   /**
-  * A renderer for the xiangqi board
+  * A table and image based renderer
   *
   * This one uses a table to place png images
   */
 	class renderer_table extends renderer
 	{
-		var $oNotation = null;
-		
-		/**
-		* @param array
-		* @param string
-		*/
-		function __construct($pieceMap, $sNotationType)
-		{
-		  $this->pieceMap = $pieceMap;
-			$this->oNotation = xiangqi::getNotation($sNotationType);
-		}
-		
 		/**
 	  * get the html that represents the piece
 	  * @param object pieceinfo
@@ -67,13 +55,13 @@
 	    $sHTML .= '<tr><th>&nbsp;</th>';
 	    for ($m = 0; $m < 9; $m++)
 			{
-			  $sHTML .= '<th style="color:red;">'.$this->oNotation->getLabel('col', $m, "Red").'</th>';
+			  $sHTML .= '<th style="color:black;">'.$this->oNotation->getLabel('col', $m, "Black").'</th>';
 			}
 	    $sHTML .= '<th>&nbsp;</th></tr>';
 	    
 	    for ($k = 0; $k < 10; $k++)
 			{
-			  $sHTML .= '<tr><th style="color:red;" >'.$this->oNotation->getLabel('row', $k, "Red").'</th>';
+			  $sHTML .= '<tr><th style="color:black;" >'.$this->oNotation->getLabel('row', $k, "Black").'</th>';
 				for ($m = 0; $m < 9; $m++)
 				{
 				  $sHTML .= '<td>';
@@ -84,13 +72,13 @@
 				  }
 				  $sHTML .= '&nbsp;</td>';
 				}
-				$sHTML .= '<th>'.$this->oNotation->getLabel('row', $k, "Black").'</th></tr>';
+				$sHTML .= '<th style="color:red;">'.$this->oNotation->getLabel('row', $k, "Red").'</th></tr>';
 			}
 			
 			$sHTML .= '<tr><th>&nbsp;</th>';
 	    for ($m = 0; $m < 9; $m++)
 			{
-			  $sHTML .= '<th>'.$this->oNotation->getLabel('col', $m, "Black").'</th>';
+			  $sHTML .= '<th style="color:red;">'.$this->oNotation->getLabel('col', $m, "Red").'</th>';
 			}
 	    $sHTML .= '<th>&nbsp;</th></tr>';
 			
