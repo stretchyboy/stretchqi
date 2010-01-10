@@ -40,8 +40,8 @@
 		var $iColumn;
 		
 		/**
-		* @var int Row
-		* @var int Column
+		* @param int
+		* @param int
 		*/
 		function __construct($iRow, $iColumn)
 		{

@@ -35,6 +35,10 @@
 	class renderer
 	{
 		var $oNotation = null;
+		/**
+		* @param array contains object pieceinfo
+		* @param string
+		*/
 		function __construct($pieceMap, $sNotationType)
 		{
 		  $this->pieceMap = $pieceMap;
@@ -43,7 +47,7 @@
 		
 		/**
 		* set the array of pieces in their current position
-		* @var array
+		* @param array
 		*/
 		function setPieceMap($pieceMap)
 		{
@@ -52,7 +56,7 @@
 		
 		/**
 	  * get the html that represents the piece
-	  * @var object pieceinfo
+	  * @param object pieceinfo
 	  * @return string
 	  */
 		function getPieceHTML($oPiece)

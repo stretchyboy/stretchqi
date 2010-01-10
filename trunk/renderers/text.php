@@ -37,7 +37,7 @@
 	{
 	  /**
 	  * get the html that represents the piece
-	  * @var object pieceinfo
+	  * @param object pieceinfo
 	  */
 		function getPieceHTML($oPiece)
 		{

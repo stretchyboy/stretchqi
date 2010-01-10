@@ -53,6 +53,11 @@
 		*/
 		var $captured = false;
 
+		/**
+		* @param string
+		* @param string
+		* @param object position
+		*/
 		function __construct($type, $color, $position)
 		{
 			$this->type = $type;
@@ -77,7 +82,7 @@
 		}
 		
 		/**
-		* @var bool
+		* @param bool
 		*/
 		function setCaptured($bVal)
 		{
@@ -85,7 +90,7 @@
 		}
 		
 		/**
-		* @var object position
+		* @param object position
 		*/
 		function setPosition($newPosition)
 		{

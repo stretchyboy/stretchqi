@@ -59,7 +59,13 @@
     */
 		var $iPieceID = null;
 		
-		
+		/**
+		* @param string
+		* @param object position
+		* @param object position
+		* @param string
+		* @param int
+		*/
 		function __construct($sPiece, $oFormerPosition, $oNewPosition, $sColor = null, $iPieceID = null)
 		{
 			$this->sPiece = $sPiece;

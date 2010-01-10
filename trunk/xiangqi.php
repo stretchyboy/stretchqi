@@ -100,6 +100,7 @@
     
     /**
     * find all relevant pieces for all the moves
+    * @param array
 		* @return array the array of move objects with their piece ids set
 		* @see move
 		*/
@@ -125,7 +126,7 @@
     /**
     * find the piece being refered to in the move in the clors peice list
 		* @return object move object with its piece id set
-		* @var object move
+		* @param object move
 		*/
     function findMovePiece($oMove)
     {
@@ -178,7 +179,7 @@
     
     /**
     * apply the array of move object to the board
-    * @var array 
+    * @param array 
     */
     function applyMoves($aMoves)
     {
@@ -198,6 +199,7 @@
     
     /**
     * apply one move to the board
+    * @param object move
     */
     function _applyMove($oMove)
     {
@@ -229,7 +231,7 @@
     * is this move valid
     * @todo do checking
     * @return bool
-    * @var object move
+    * @param object move
     */
     function isValid($oMove)
     {
@@ -321,8 +323,8 @@
 	  
 	  /**
 	  * get a renderer object and set it with current notation
-	  * @var string type of renderer
-	  * @var string type of notation
+	  * @param string type of renderer
+	  * @param string type of notation
 	  * @return object renderer
 	  */
 	  function getRenderer($sType = 'table', $sNotationType = null)
