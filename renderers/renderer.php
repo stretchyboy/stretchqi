@@ -34,7 +34,11 @@
   */
 	class renderer
 	{
+	  /**
+	  * @var object notation
+	  */
 		var $oNotation = null;
+		
 		/**
 		* @param array contains object pieceinfo
 		* @param string

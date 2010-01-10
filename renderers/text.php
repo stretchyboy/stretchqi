@@ -26,7 +26,7 @@
   require_once('table.php');
   
   /**
-  * A renderer for the xiangqi board
+  * A text and color based renderer
   *
   * This one uses the piece letters from a notation and color
   *
