@@ -64,7 +64,7 @@
 		* Create an array of moves from text
 		* 
 		* splitting the text into chunks and assuming that each move is by the alternate color
-		* @var string
+		* @param string
 		* @return array
 		*/
 		function getMoves($sText)
@@ -84,7 +84,7 @@
 		
 		/**
 		* split the notation text into indivual moves
-		* @var text
+		* @param text
 		* @return array
 		*/
 		function splitMoveText($sText)
@@ -116,8 +116,8 @@
 		
 		/**
 		* create the move object for a text move for a color
-		* @var string
-		* @var string
+		* @param string
+		* @param string
 		* @return object move
 		*/
 		function parseMove($sText, $sColor)
@@ -149,7 +149,7 @@
 		
 		/**
 		* get text representation of move
-		* @var object position
+		* @param object position
 		* @return string
 		*/
 		function getText($oMove)
@@ -167,9 +167,9 @@
 		
 		/**
 		* get this notations label for a position along a row or coloum for a color
-		* @var string
-		* @var int
-		* @var string
+		* @param string
+		* @param int
+		* @param string
 		* @return string
 		*/
 		function getLabel($sAxis, $iPos, $sColor = "Black")
@@ -193,9 +193,9 @@
 		
 		/**
 		* get stretchqi postion value for this notations label of a position along a row or coloum for a color
-		* @var string
-		* @var int
-		* @var string
+		* @param string
+		* @param int
+		* @param string
 		* @return string
 		*/
 		function getPos($sAxis, $sLabel, $sColor = "Black")
