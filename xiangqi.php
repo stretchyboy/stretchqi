@@ -1,14 +1,60 @@
 <?php
+/**
+ * Stretchqi PHP for representing a xiangqi board from notation
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; version 2
+ * of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @package stretchqi
+ * @author Martyn Eggleton, Steve Withington
+ * @copyright 2009-2010 Martyn Eggleton, Steve Withington
+ * @license http://www.gnu.org/licenses/gpl-2.0.txt GPLv2
+ * @version SVN: $Rev$ $Date$
+ * @link http://stretchqi.googlecode.com
+ */
+
   require_once('position.php');
   require_once('pieceinfo.php');
   require_once('move.php');
   
-
+  /**
+  * Represents the game
+  */
   class xiangqi
   {
+    /**
+    * array of pieceinfo objects representing all reds pieces (including taken ones)
+    * @var array
+    */
     var $redPieces = array();
+    
+    /**
+    * array of pieceinfo objects representing all blacks pieces (including taken ones)
+    * @var array
+    */
     var $blackPieces = array();
+    
+    /**
+    * the fist used notation for this board, there after taken to be the default
+    * @var string
+    */
     var $sNotationType = null;
+    
+    /**
+    * array of pieceinfo objects representing current positions of pieces on board
+    * @var array
+    */
     var $pieceMap = array();
     
     
@@ -17,6 +63,13 @@
       $this->reset();
     }
     
+    /**
+    * Parse notation into array of move objects
+    * @param string notation to parse
+    * @param string notation type (they live in the notations folder)
+    * @return array array of move objects
+    * @see move
+    */
     function parseNotation($sText, $sType = '1') //types are from wikipedia article http://en.wikipedia.org/wiki/Xiangqi
     {
       if(!$this->sNotationType)
@@ -34,6 +87,9 @@
       }
     }
     
+    /**
+		* @return object notation
+		*/
     function getNotation($sType)
     {
       $sNotationName = 'notation_'.$sType;
@@ -42,6 +98,11 @@
       return $oNotation;
     }
     
+    /**
+    * find all relevant pieces for all the moves
+		* @return array the array of move objects with their piece ids set
+		* @see move
+		*/
     function findMovesPieces($aMoves)
     {
       $aNewMoves = array();
@@ -61,7 +122,11 @@
       return $aNewMoves;
     }
     
-    
+    /**
+    * find the piece being refered to in the move in the clors peice list
+		* @return object move object with its piece id set
+		* @var object move
+		*/
     function findMovePiece($oMove)
     {
       //echo "\n<br><pre>\noMove =" .var_export($oMove, TRUE)."</pre>";
@@ -111,6 +176,10 @@
       return false;
     }
     
+    /**
+    * apply the array of move object to the board
+    * @var array 
+    */
     function applyMoves($aMoves)
     {
       foreach($aMoves as $oMove)
@@ -127,27 +196,49 @@
       
     }
     
+    /**
+    * apply one move to the board
+    */
     function _applyMove($oMove)
     {
       //echo "\n<br><b>_applyMove ".get_class($this)."</b>\n";
       if($oMove->sColor == 'Black')
       {
-        $oPiece = $this->blackPieces[$oMove->iPieceID];
+        $oPiece = $this->blackPieces[$oMove->iPieceID]->copy();
       }
       else
       {
-        $oPiece = $this->redPieces[$oMove->iPieceID];
+        $oPiece = $this->redPieces[$oMove->iPieceID]->copy();
       }
-      $oPiece->setPosition($oMove->oNewPosition); 
+      
+      $oPiece->setPosition($oMove->oNewPosition);
+      if($oMove->sColor == 'Black')
+      {
+        $this->blackPieces[$oMove->iPieceID] = $oPiece->copy();
+      }
+      else
+      {
+        $this->redPieces[$oMove->iPieceID] = $oPiece->copy();
+      }
+      
       $this->pieceMap[$oMove->oNewPosition->iRow][$oMove->oNewPosition->iColumn] = $oPiece->copy();
       $this->pieceMap[$oMove->oFormerPosition->iRow][$oMove->oFormerPosition->iColumn] = null;
     }
     
+    /**
+    * is this move valid
+    * @todo do checking
+    * @return bool
+    * @var object move
+    */
     function isValid($oMove)
     {
       return true;
     }
     
+    /**
+    * set the games state back to standard starting postions
+    */
     function reset()
     {
       $this->redPieces[0]  = new PieceInfo("chariot",  "Red", new Position(9, 0));
@@ -228,6 +319,12 @@
 			//echo "\n<br><pre>\nthis =" .var_export($this, TRUE)."</pre>";
 	  }
 	  
+	  /**
+	  * get a renderer object and set it with current notation
+	  * @var string type of renderer
+	  * @var string type of notation
+	  * @return object renderer
+	  */
 	  function getRenderer($sType = 'table', $sNotationType = null)
 	  {
 	    if(!$sNotationType)
@@ -240,10 +337,5 @@
       //echo "\n<br><pre>\nsNotationType =" .$sNotationType."</pre>";
       $oRenderer = new $sRenderer($this->pieceMap, $sNotationType);
       return $oRenderer;
-	  }
-	  
-	  function loadNotation($sType)
-	  {
-	    
 	  }
 	}

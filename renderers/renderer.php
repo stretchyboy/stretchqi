@@ -23,39 +23,49 @@
  * @version SVN: $Rev$ $Date$
  * @link http://stretchqi.googlecode.com
  */
+  
  
-  require_once('1.php');  
+  require_once('renderer.php');
   
   /**
-  * Representation of a xiangqi notation
-  * A modified form of "Notational system 1" in Wikipedia
-  * which uses the english piece letters
-  *   chariot  = R,
-	*		horse    = H
-	*		elephant = E
-	*		advisor  = A
-	*		general  = G
-	*		cannon   = C
-	*		soldier  = S
-  * @see notation_1
+  * A renderer for the xiangqi board
+  *
+  * This is the base class for the others
   */
-	class notation_1a extends notation_1
+	class renderer
 	{
-	  /**
-	  * map of piece names to characters for each color (black first)
-	  *
-	  * this notation only differs from notation_1 in that this uses these english letters
-	  *
+		var $oNotation = null;
+		function __construct($pieceMap, $sNotationType)
+		{
+		  $this->pieceMap = $pieceMap;
+			$this->oNotation = xiangqi::getNotation($sNotationType);
+		}
+		
+		/**
+		* set the array of pieces in their current position
 		* @var array
-		* @see notation_1
 		*/
-		var $aPieces = array(
-		  "chariot"  => array('R','R'),
-			"horse"    => array('H','H'),
-			"elephant" => array('E','E'),
-			"advisor"  => array('A','A'),
-			"general"     => array('G','G'),
-			"cannon"   => array('C','C'),
-			"soldier"     => array('S','S'),
-			);
+		function setPieceMap($pieceMap)
+		{
+		  $this->pieceMap = $pieceMap;
+		}
+		
+		/**
+	  * get the html that represents the piece
+	  * @var object pieceinfo
+	  * @return string
+	  */
+		function getPieceHTML($oPiece)
+		{
+		  throw('Renderer Base class must be extended');
+		}
+		
+		/**
+		* get the html that represents the pieceMap we have been given in the notation we have
+		* @return string
+		*/
+	  function getHTML()
+	  {
+		  throw('Renderer Base class must be extended');
+	  }
 	}
