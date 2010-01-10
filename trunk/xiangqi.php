@@ -34,16 +34,10 @@
   class xiangqi
   {
     /**
-    * array of pieceinfo objects representing all reds pieces (including taken ones)
+    * array of pieceinfo objects representing all pieces foreach color(including taken ones)
     * @var array
     */
-    var $redPieces = array();
-    
-    /**
-    * array of pieceinfo objects representing all blacks pieces (including taken ones)
-    * @var array
-    */
-    var $blackPieces = array();
+    var $playerPieces = array('Red' => array(), 'Black' => array());
     
     /**
     * the fist used notation for this board, there after taken to be the default
@@ -63,29 +57,6 @@
       $this->reset();
     }
     
-    /**
-    * Parse notation into array of move objects
-    * @param string notation to parse
-    * @param string notation type (they live in the notations folder)
-    * @return array array of move objects
-    * @see move
-    */
-    function parseNotation($sText, $sType = '1') //types are from wikipedia article http://en.wikipedia.org/wiki/Xiangqi
-    {
-      if(!$this->sNotationType)
-      {
-        $this->sNotationType = $sType;
-      }
-      $oNotation = $this->getNotation($sType);
-      $aMoves = $oNotation->getMoves($sText);
-      //echo "\n<br><pre>\naMoves  =" .var_export($aMoves , TRUE)."</pre>";
-      $aMoves = $this->findMovesPieces($aMoves);
-      //echo "\n<br><pre>\naMoves after findMovesPieces =" .var_export($aMoves , TRUE)."</pre>";
-      if($aMoves)
-      {
-        $this->applyMoves($aMoves);
-      }
-    }
     
     /**
 		* @return object notation
@@ -99,28 +70,37 @@
     }
     
     /**
-    * find all relevant pieces for all the moves
-    * @param array
-		* @return array the array of move objects with their piece ids set
-		* @see move
-		*/
-    function findMovesPieces($aMoves)
+    * Parse notation into array of move objects
+    * @param string notation to parse
+    * @param string notation type (they live in the notations folder)
+    * @return array array of move objects
+    * @see move
+    */
+    function parseNotation($sText, $sType = '1')
     {
-      $aNewMoves = array();
-      foreach($aMoves as $oMove)
+      if(!$this->sNotationType)
       {
-       $xMove = $this->findMovePiece($oMove);
-       //echo "\n<br><pre>\nxMove  =" .var_export($xMove , TRUE)."</pre>";
-       if($xMove)
-       {
-          $aNewMoves[] = $xMove;
-       }
-       else
-       {
-         return false;
-       }
+        $this->sNotationType = $sType;
       }
-      return $aNewMoves;
+      $oNotation = $this->getNotation($sType);
+      $aMoves = $oNotation->getMoves($sText);
+      if($aMoves)
+      {
+        foreach(array_keys($aMoves) as $iMove)
+        {
+           $oMove = $this->findMovePiece($aMoves[$iMove]);
+           if(empty($oMove->iPieceID))
+           {
+             throw("can't find piece in map");
+           }
+           
+           if(!$this->isValid($oMove))
+           {
+             throw("move not valid");
+           }
+           $this->applyMove($oMove);
+        }
+      }
     }
     
     /**
@@ -130,98 +110,36 @@
 		*/
     function findMovePiece($oMove)
     {
-      //echo "\n<br><pre>\noMove =" .var_export($oMove, TRUE)."</pre>";
       $oBoardPiece = $this->pieceMap[$oMove->oFormerPosition->iRow][$oMove->oFormerPosition->iColumn];
-      //echo "\n<br><pre>\nthis->pieceMap =" .var_export($this->pieceMap, TRUE)."</pre>";
       
       $bSuccess = false;
       if($oBoardPiece->type == $oMove->sPiece && $oBoardPiece->color == $oMove->sColor)
       {
-        if($oMove->sColor == 'Black')
+        foreach($this->playerPieces[$oMove->sColor] as $iID => $oPieceInfo)
         {
-          foreach($this->blackPieces as $iID => $oPieceInfo)
+          $bEquals = $oPieceInfo == $oBoardPiece;
+          
+          if($oPieceInfo == $oBoardPiece)
           {
-            //echo "\n<br><pre>\noBoardPiece  =" .var_export($oBoardPiece , TRUE)."</pre>";
-            //echo "\n<br><pre>\noPieceInfo =" .var_export($oPieceInfo, TRUE)."</pre>";
-            $bEquals = $oPieceInfo == $oBoardPiece;
-            //echo "\n<br><pre>\nbEquals  =" .var_export($bEquals , TRUE)."</pre>";
-            
-            if($oPieceInfo == $oBoardPiece)
-            {
-              $oMove->iPieceID = $iID;
-              $bSuccess = true;
-            }
-          }
-        }
-        else
-        {
-          foreach($this->redPieces as $iID => $oPieceInfo)
-          {
-            //echo "\n<br><pre>\noBoardPiece  =" .var_export($oBoardPiece , TRUE)."</pre>";
-            //echo "\n<br><pre>\noPieceInfo =" .var_export($oPieceInfo, TRUE)."</pre>";
-            $bEquals = $oPieceInfo == $oBoardPiece;
-            //echo "\n<br><pre>\nbEquals  =" .var_export($bEquals , TRUE)."</pre>";
-            if($oPieceInfo == $oBoardPiece)
-            {
-              $oMove->iPieceID = $iID;
-              $bSuccess = true;
-            }
+            $oMove->iPieceID = $iID;
+            $bSuccess = true;
           }
         }
       }
-      if($bSuccess)
-      {
-        //echo "\n<br><pre>\nbSuccess =" .var_export($bSuccess, TRUE)."</pre>";
-        return $oMove;
-      }
-      return false;
-    }
-    
-    /**
-    * apply the array of move object to the board
-    * @param array 
-    */
-    function applyMoves($aMoves)
-    {
-      foreach($aMoves as $oMove)
-      {
-        if($this->isValid($oMove))
-        {
-          $this->_applyMove($oMove);
-        }
-        else
-        {
-          return false; 
-        }
-      }
-      
+      return $oMove;
     }
     
     /**
     * apply one move to the board
     * @param object move
     */
-    function _applyMove($oMove)
+    function applyMove($oMove)
     {
-      //echo "\n<br><b>_applyMove ".get_class($this)."</b>\n";
-      if($oMove->sColor == 'Black')
-      {
-        $oPiece = $this->blackPieces[$oMove->iPieceID]->copy();
-      }
-      else
-      {
-        $oPiece = $this->redPieces[$oMove->iPieceID]->copy();
-      }
+      $oPiece = $this->playerPieces[$oMove->sColor][$oMove->iPieceID]->copy();
       
       $oPiece->setPosition($oMove->oNewPosition);
-      if($oMove->sColor == 'Black')
-      {
-        $this->blackPieces[$oMove->iPieceID] = $oPiece->copy();
-      }
-      else
-      {
-        $this->redPieces[$oMove->iPieceID] = $oPiece->copy();
-      }
+      
+      $this->playerPieces[$oMove->sColor][$oMove->iPieceID] = $oPiece->copy();
       
       $this->pieceMap[$oMove->oNewPosition->iRow][$oMove->oNewPosition->iColumn] = $oPiece->copy();
       $this->pieceMap[$oMove->oFormerPosition->iRow][$oMove->oFormerPosition->iColumn] = null;
@@ -243,38 +161,38 @@
     */
     function reset()
     {
-      $this->redPieces[0]  = new PieceInfo("chariot",  "Red", new Position(9, 0));
-			$this->redPieces[1]  = new PieceInfo("horse",    "Red", new Position(9, 1));
-			$this->redPieces[2]  = new PieceInfo("elephant", "Red", new Position(9, 2));
-			$this->redPieces[3]  = new PieceInfo("advisor",  "Red", new Position(9, 3));
-			$this->redPieces[4]  = new PieceInfo("general",     "Red", new Position(9, 4));
-			$this->redPieces[5]  = new PieceInfo("advisor",  "Red", new Position(9, 5));
-			$this->redPieces[6]  = new PieceInfo("elephant", "Red", new Position(9, 6));
-			$this->redPieces[7]  = new PieceInfo("horse",    "Red", new Position(9, 7));
-			$this->redPieces[8]  = new PieceInfo("chariot",  "Red", new Position(9, 8));
-			$this->redPieces[9]  = new PieceInfo("cannon",   "Red", new Position(7, 1));
-			$this->redPieces[10] = new PieceInfo("cannon",   "Red", new Position(7, 7));
-			//echo "\n<br><pre>\nthis->redPieces =" .var_export($this->redPieces, TRUE)."</pre>";
+      $this->playerPieces['Red'][0]  = new PieceInfo("chariot",  "Red", new Position(9, 0));
+			$this->playerPieces['Red'][1]  = new PieceInfo("horse",    "Red", new Position(9, 1));
+			$this->playerPieces['Red'][2]  = new PieceInfo("elephant", "Red", new Position(9, 2));
+			$this->playerPieces['Red'][3]  = new PieceInfo("advisor",  "Red", new Position(9, 3));
+			$this->playerPieces['Red'][4]  = new PieceInfo("general",     "Red", new Position(9, 4));
+			$this->playerPieces['Red'][5]  = new PieceInfo("advisor",  "Red", new Position(9, 5));
+			$this->playerPieces['Red'][6]  = new PieceInfo("elephant", "Red", new Position(9, 6));
+			$this->playerPieces['Red'][7]  = new PieceInfo("horse",    "Red", new Position(9, 7));
+			$this->playerPieces['Red'][8]  = new PieceInfo("chariot",  "Red", new Position(9, 8));
+			$this->playerPieces['Red'][9]  = new PieceInfo("cannon",   "Red", new Position(7, 1));
+			$this->playerPieces['Red'][10] = new PieceInfo("cannon",   "Red", new Position(7, 7));
+
       
 			for($soldier = 0; $soldier < 5; $soldier++)
       {
-	        	$this->redPieces[11 + $soldier] = new PieceInfo("soldier", "Red", new Position(6, 2*$soldier));
+	        	$this->playerPieces['Red'][11 + $soldier] = new PieceInfo("soldier", "Red", new Position(6, 2*$soldier));
 			}
 
-			$this->blackPieces[0]  = new PieceInfo("chariot",  "Black", new Position(0, 0));
-			$this->blackPieces[1]  = new PieceInfo("horse",    "Black", new Position(0, 1));
-			$this->blackPieces[2]  = new PieceInfo("elephant", "Black", new Position(0, 2));
-			$this->blackPieces[3]  = new PieceInfo("advisor",  "Black", new Position(0, 3));
-			$this->blackPieces[4]  = new PieceInfo("general",     "Black", new Position(0, 4));
-			$this->blackPieces[5]  = new PieceInfo("advisor",  "Black", new Position(0, 5));
-			$this->blackPieces[6]  = new PieceInfo("elephant", "Black", new Position(0, 6));
-			$this->blackPieces[7]  = new PieceInfo("horse",    "Black", new Position(0, 7));
-			$this->blackPieces[8]  = new PieceInfo("chariot",  "Black", new Position(0, 8));
-			$this->blackPieces[9]  = new PieceInfo("cannon",   "Black", new Position(2, 1));
-			$this->blackPieces[10] = new PieceInfo("cannon",   "Black", new Position(2, 7));
+			$this->playerPieces['Black'][0]  = new PieceInfo("chariot",  "Black", new Position(0, 0));
+			$this->playerPieces['Black'][1]  = new PieceInfo("horse",    "Black", new Position(0, 1));
+			$this->playerPieces['Black'][2]  = new PieceInfo("elephant", "Black", new Position(0, 2));
+			$this->playerPieces['Black'][3]  = new PieceInfo("advisor",  "Black", new Position(0, 3));
+			$this->playerPieces['Black'][4]  = new PieceInfo("general",     "Black", new Position(0, 4));
+			$this->playerPieces['Black'][5]  = new PieceInfo("advisor",  "Black", new Position(0, 5));
+			$this->playerPieces['Black'][6]  = new PieceInfo("elephant", "Black", new Position(0, 6));
+			$this->playerPieces['Black'][7]  = new PieceInfo("horse",    "Black", new Position(0, 7));
+			$this->playerPieces['Black'][8]  = new PieceInfo("chariot",  "Black", new Position(0, 8));
+			$this->playerPieces['Black'][9]  = new PieceInfo("cannon",   "Black", new Position(2, 1));
+			$this->playerPieces['Black'][10] = new PieceInfo("cannon",   "Black", new Position(2, 7));
       for ($soldier = 0; $soldier < 5; $soldier++)
       {
-          $this->blackPieces[11 + $soldier] = new PieceInfo("soldier", "Black", new Position(3, 2*$soldier));
+          $this->playerPieces['Black'][11 + $soldier] = new PieceInfo("soldier", "Black", new Position(3, 2*$soldier));
       }
 	    
 	    $this->pieceMap = array();
@@ -287,38 +205,37 @@
 				}
 			}
 
-			$this->pieceMap[0][0] = $this->blackPieces[0];
-			$this->pieceMap[0][1] = $this->blackPieces[1];
-			$this->pieceMap[0][2] = $this->blackPieces[2];
-			$this->pieceMap[0][3] = $this->blackPieces[3];
-			$this->pieceMap[0][4] = $this->blackPieces[4];
-			$this->pieceMap[0][5] = $this->blackPieces[5];
-			$this->pieceMap[0][6] = $this->blackPieces[6];
-			$this->pieceMap[0][7] = $this->blackPieces[7];
-			$this->pieceMap[0][8] = $this->blackPieces[8];
-			$this->pieceMap[2][1] = $this->blackPieces[9];
-			$this->pieceMap[2][7] = $this->blackPieces[10];
+			$this->pieceMap[0][0] = $this->playerPieces['Black'][0];
+			$this->pieceMap[0][1] = $this->playerPieces['Black'][1];
+			$this->pieceMap[0][2] = $this->playerPieces['Black'][2];
+			$this->pieceMap[0][3] = $this->playerPieces['Black'][3];
+			$this->pieceMap[0][4] = $this->playerPieces['Black'][4];
+			$this->pieceMap[0][5] = $this->playerPieces['Black'][5];
+			$this->pieceMap[0][6] = $this->playerPieces['Black'][6];
+			$this->pieceMap[0][7] = $this->playerPieces['Black'][7];
+			$this->pieceMap[0][8] = $this->playerPieces['Black'][8];
+			$this->pieceMap[2][1] = $this->playerPieces['Black'][9];
+			$this->pieceMap[2][7] = $this->playerPieces['Black'][10];
 			for ($soldier = 0; $soldier < 5; $soldier++)
 			{
-	        	$this->pieceMap[3][2*$soldier] = $this->blackPieces[11 + $soldier];
+	        	$this->pieceMap[3][2*$soldier] = $this->playerPieces['Black'][11 + $soldier];
 			}
 
-			$this->pieceMap[9][0] = $this->redPieces[0];
-			$this->pieceMap[9][1] = $this->redPieces[1];
-			$this->pieceMap[9][2] = $this->redPieces[2];
-			$this->pieceMap[9][3] = $this->redPieces[3];
-			$this->pieceMap[9][4] = $this->redPieces[4];
-			$this->pieceMap[9][5] = $this->redPieces[5];
-			$this->pieceMap[9][6] = $this->redPieces[6];
-			$this->pieceMap[9][7] = $this->redPieces[7];
-			$this->pieceMap[9][8] = $this->redPieces[8];
-			$this->pieceMap[7][1] = $this->redPieces[9];
-			$this->pieceMap[7][7] = $this->redPieces[10];
+			$this->pieceMap[9][0] = $this->playerPieces['Red'][0];
+			$this->pieceMap[9][1] = $this->playerPieces['Red'][1];
+			$this->pieceMap[9][2] = $this->playerPieces['Red'][2];
+			$this->pieceMap[9][3] = $this->playerPieces['Red'][3];
+			$this->pieceMap[9][4] = $this->playerPieces['Red'][4];
+			$this->pieceMap[9][5] = $this->playerPieces['Red'][5];
+			$this->pieceMap[9][6] = $this->playerPieces['Red'][6];
+			$this->pieceMap[9][7] = $this->playerPieces['Red'][7];
+			$this->pieceMap[9][8] = $this->playerPieces['Red'][8];
+			$this->pieceMap[7][1] = $this->playerPieces['Red'][9];
+			$this->pieceMap[7][7] = $this->playerPieces['Red'][10];
 			for($soldier = 0; $soldier < 5; $soldier++)
 			{
-	        	$this->pieceMap[6][2*$soldier] = $this->redPieces[11 + $soldier];
+	        	$this->pieceMap[6][2*$soldier] = $this->playerPieces['Red'][11 + $soldier];
 	  	}
-			//echo "\n<br><pre>\nthis =" .var_export($this, TRUE)."</pre>";
 	  }
 	  
 	  /**
@@ -336,7 +253,6 @@
       
       require_once('renderers/'.$sType.'.php');
       $sRenderer = 'renderer_'.$sType;
-      //echo "\n<br><pre>\nsNotationType =" .$sNotationType."</pre>";
       $oRenderer = new $sRenderer($this->pieceMap, $sNotationType);
       return $oRenderer;
 	  }
