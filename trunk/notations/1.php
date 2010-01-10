@@ -28,8 +28,8 @@
   
  
   /**
-  * Representation of a xiangqi notation
-  *
+  * Notation 1.
+  * 
   * Taken from "The Chess of China"  "Notational system 1" in Wikipedia
   * @link http://en.wikipedia.org/wiki/Xiangqi#Notational_system_1
   */
@@ -59,29 +59,6 @@
 			"soldier"  => array('卒','兵'),
 			);
 		
-		
-		/**
-		* Create an array of moves from text
-		* 
-		* splitting the text into chunks and assuming that each move is by the alternate color
-		* @param string
-		* @return array
-		*/
-		function getMoves($sText)
-		{
-		  $aTexts = $this->splitMoveText($sText);
-		  $sMoveColor = $this->sStartColor;
-		  $aMoves = array();
-		  foreach($aTexts as $sText)
-		  {
-		    $aMoves[] = $this->parseMove(trim($sText), $sMoveColor);
-		    
-		    //if move is red make it black if not red make it red 
-		    $sMoveColor = ($sMoveColor == 'Red'?'Black':'Red');
-		  }
-		  return $aMoves;
-		}
-		
 		/**
 		* split the notation text into indivual moves
 		* @param text
@@ -92,7 +69,6 @@
 		  $sText  = str_replace('–', '-', $sText);
 		  $sText  = str_replace("\r", '', $sText);
 		  $aLines = split("\n", $sText);
-		  //echo "\n<br><pre>\naLines  =" .var_export($aLines , TRUE)."</pre>";
 		  $aTexts = array();
 		  foreach($aLines as $sLine)
 		  {
@@ -122,21 +98,15 @@
 		*/
 		function parseMove($sText, $sColor)
 		{
-		  //echo "\n<br><pre>\nsText =" .$sText."</pre>";
-		  $aMatches = null;
-		 // preg_match_all('/(.?)\s+\(([0-9])([0-9])\)\-([0-9])([0-9])/', $sText, $aMatches);
 		  preg_match('/(.*)\s+\(([0-9])([0-9])\)\-([0-9])([0-9])/', $sText, $aMatches);
-		  //echo "\n<br><pre>\nsText =" .$sText."</pre>";
-		  //echo "\n<br><pre>\naMatches =" .var_export($aMatches, TRUE)."</pre>";
 		  
 		  if(isset($this->aPieceNames[$sColor][$aMatches[1]]))
 		  {
 		    $sPiece = $this->aPieceNames[$sColor][$aMatches[1]];
-		    //echo "\n<br><pre>\nsPiece  =" .$sPiece ."</pre>";
 		  }
 		  else
 		  {
-		    //echo "not matched";
+		   
 		  }
 		  
 		  $oFormerPosition = new position($this->getPos('row', $aMatches[2], $sColor), $this->getPos('col', $aMatches[3], $sColor));
@@ -157,10 +127,8 @@
 		  $sMove  = $this->getPieceLetter($oMove->sPiece, $oMove->sColor). " ";
 		  $sMove .= '('.$this->getLabel('row', $oMove->oFormerPosition->iRow, $oMove->sColor);
 		  $sMove .= $this->getLabel('col', $oMove->oFormerPosition->iColumn, $oMove->sColor).')-';
-		  
 		  $sMove .= $this->getLabel('row', $oMove->oNewPosition->iRow, $oMove->sColor);
 		  $sMove .= $this->getLabel('col', $oMove->oNewPosition->iColumn, $oMove->sColor);
-		  //echo "\n<br><pre>\ngetText sMove  =" .$sMove ."</pre>";
 		  
 			return $sMove;
 		}

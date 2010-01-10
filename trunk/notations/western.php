@@ -24,12 +24,12 @@
  * @link http://stretchqi.googlecode.com
  */
  
-  require_once('1.php');  
+  require_once('notation.php');  
   
   /**
-  * Notation 1a
+  * Notation Western
   *
-  * A modified form of "Notational system 1" in Wikipedia
+  * A modified form western chess notation
   * which uses the english piece letters
   *   chariot  = R,
 	*		horse    = H
@@ -38,17 +38,20 @@
 	*		general  = G
 	*		cannon   = C
 	*		soldier  = S
-  * @see notation_1
+	*
+	* @todo implement western notation only methods that throw ann error here
   */
-	class notation_1a extends notation_1
+	class notation_western extends notation
 	{
+	  /**
+		* @var string
+		*/
+	  var $sStartColor = 'Red';
+	  
 	  /**
 	  * map of piece names to characters for each color (black first)
 	  *
-	  * this notation only differs from notation_1 in that this uses these english letters
-	  *
 		* @var array
-		* @see notation_1
 		*/
 		var $aPieces = array(
 		  "chariot"  => array('R','R'),
@@ -59,4 +62,61 @@
 			"cannon"   => array('C','C'),
 			"soldier"     => array('S','S'),
 			);
+		
+		
+		
+		/**
+		* split the notation text into indivual moves
+		* @param text
+		* @return array
+		*/
+		function splitMoveText($sText)
+		{
+		  throw('Yet to be implemented for western notation');
+		}
+		
+		/**
+		* create the move object for a text move for a color
+		* @param string
+		* @param string
+		* @reparaturn object move
+		*/
+		function parseMove($sText, $sColor)
+		{
+		  throw('Yet to be implemented for western notation');
+		}
+		
+		/**
+		* get text representation of move
+		* @param object move
+		* @return string
+		*/
+		function getText($oMove)
+		{
+		  throw('Yet to be implemented for western notation');
+		}
+		
+		/**
+		* get this notations label for a position along a row or coloum for a color
+		* @param string
+		* @param int
+		* @param string
+		* @return string
+		*/
+		function getLabel($sAxis, $iPos, $sColor = "Black")
+		{
+		  throw('Yet to be implemented for western notation');
+		}
+		
+		/**
+		* get stretchqi postion value for this notations label of a position along a row or coloum for a color
+		* @param string
+		* @param int
+		* @param string
+		* @return string
+		*/
+		function getPos($sAxis, $sLabel, $sColor = "Black")
+		{
+		  throw('Yet to be implemented for western notation');
+		}
 	}

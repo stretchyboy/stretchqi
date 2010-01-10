@@ -86,6 +86,7 @@
 		  return $this->aPieces[$sName][$sColor == 'black'?0:1];
 		}
 		
+		
 		/**
 		* Create an array of moves from text
 		* 
@@ -95,8 +96,19 @@
 		*/
 		function getMoves($sText)
 		{
-		  throw('Notation Base class must be extended');
+		  $aTexts = $this->splitMoveText($sText);
+		  $sMoveColor = $this->sStartColor;
+		  $aMoves = array();
+		  foreach($aTexts as $sText)
+		  {
+		    $aMoves[] = $this->parseMove(trim($sText), $sMoveColor);
+		    
+		    //if move is red make it black if not red make it red 
+		    $sMoveColor = ($sMoveColor == 'Red'?'Black':'Red');
+		  }
+		  return $aMoves;
 		}
+		
 		
 		/**
 		* split the notation text into indivual moves
