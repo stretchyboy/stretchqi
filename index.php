@@ -54,18 +54,22 @@
   }
   
   
-  require_once('xiangqi.php');
+  require_once('stretchqilib/xiangqi.php');
+  
+  $sBoard = '';
   
   $oBoard = new xiangqi();
   $oBoard->parseNotation($sText, $sNotation);
   
+  $oRenderer2 = $oBoard->getRenderer('text');
+  $sBoard .= '<br /><br />'.$oRenderer2->getHTML();
   
-  $oRender = $oBoard->getRenderer();
-  $sBoard = $oRender->getHTML();
   
-  $oRender2 = $oBoard->getRenderer('text');
-  $sBoard .= '<br /><br />'.$oRender2->getHTML();
+  $oRenderer3 = $oBoard->getRenderer('text', '1a');
+  $sBoard .= '<br /><br />'.$oRenderer3->getHTML();
   
+  $oRenderer = $oBoard->getRenderer();
+  $sBoard .= $oRenderer->getHTML();
   
   ?>
   <body>
