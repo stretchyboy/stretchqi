@@ -1,0 +1,22 @@
+
+      <refentry id="{@id}">
+       <refnamediv>
+        <refname>User Guide for Stretchqi</refname>
+        <refpurpose>To demonstrate the use of stretchqi</refpurpose>
+       </refnamediv>
+       <refsynopsisdiv>
+        <author>
+         Martyn Eggleton
+         <authorblurb>
+          {@link mailto:martyn.eggleton@gmail.com Martyn Eggleton}
+         </authorblurb>
+        </author>
+       </refsynopsisdiv>
+       {@toc}
+       <refsect1 id="{@id intro}">
+        <title>User Guide</title>
+        <para>
+         This will be the User Guide for Stretchqi. 
+        </para>
+       </refsect1>
+      </refentry>
