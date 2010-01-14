@@ -38,9 +38,16 @@
 	<title>Xiangqi Test</title>
 	</head>
 	<?php
-  $sText = "炮 (32)–35, 馬 (18)–37";
-  $sNotation = '1';
+  //$sText = "炮 (32)–35, 馬 (18)–37";
+  //$sNotation = '1';
   //$sText = "C (32)–35, H (18)–37";
+
+  $sText = "Ch3-e3, Hh10-g8";
+
+
+$sNotation = 'sensible';
+
+
   
   if($_GET['moves'])
   {
