@@ -41,7 +41,9 @@ class syntax_plugin_stretchqi extends DokuWiki_Syntax_Plugin {
     }
 
     function handle($match, $state, $pos, &$handler){
-        $data = explode("\n",$data);
+	
+	
+        $data = explode("\n",$match);
         $conf  = array_shift($data);
         array_pop($data);
         $sConf  = trim(substr($conf,10,-1));
@@ -56,6 +58,9 @@ class syntax_plugin_stretchqi extends DokuWiki_Syntax_Plugin {
 		$aConf[$aParts[0]] = $aParts[1];
 	}
 		
+	//var_dump($data);
+
+	//var_dump($aConf);
 
         // parse
         return array(
