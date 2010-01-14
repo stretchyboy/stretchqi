@@ -45,9 +45,7 @@
 		function parseMove($sText, $sColor)
 		{
 			preg_match('/([A-Z])([a-i])([0-9]+)([-x])([A-Z]?)([a-i])([0-9]+)/', $sText, $aMatches);
-			//echo "<br>$sText<pre>";
-			//var_dump($aMatches);
-		  
+			
 		  if(isset($this->aPieceNames[$sColor][$aMatches[1]]))
 		  {
 		    $sPiece = $this->aPieceNames[$sColor][$aMatches[1]];
@@ -58,8 +56,8 @@
 		  }
 		  
 		  $oFormerPosition = new position($this->getPos('row', $aMatches[3], $sColor), $this->getPos('col', $aMatches[2], $sColor));
-      $oNewPosition = new position($this->getPos('row', $aMatches[6], $sColor), $this->getPos('col', $aMatches[7], $sColor));
-		  
+		  $oNewPosition = new position($this->getPos('row', $aMatches[7], $sColor), $this->getPos('col', $aMatches[6], $sColor));
+      
 		  $oMove = new move($sPiece, $oFormerPosition, $oNewPosition, $sColor);
 		  return $oMove;
 		}
