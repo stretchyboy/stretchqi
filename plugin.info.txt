@@ -1,0 +1,7 @@
+base   strecthqi
+author Steve Withington
+email  steve@access-space.org
+date   2010-01-14
+name   strecthqi plugin
+desc   Xiangqi notation renderer
+url    http://code.google.com/p/stretchqi/
