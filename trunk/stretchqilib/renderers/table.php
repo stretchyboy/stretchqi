@@ -33,6 +33,11 @@
   */
 	class renderer_table extends renderer
 	{
+	  /**
+	  * @var string Where can i find the piece picks
+	  */
+	  var $sPiecePath = 'pieces/1/';
+	  
 		/**
 	  * get the html that represents the piece
 	  * @param object pieceinfo
@@ -40,9 +45,8 @@
 	  */
 		function getPieceHTML($oPiece)
 		{
-		  $sPiecePath = 'pieces/1/';
 	    $sName = ($oPiece->color=='Black'?'b':'r').$oPiece->type.'.png';
-			return '<img src="'.$sPiecePath.$sName.'" alt="'.$this->oNotation->getPieceLetter($oPiece->type, $oPiece->color).'" title="'.ucwords($oPiece->type).' ('.$this->oNotation->getPieceLetter($oPiece->type, $oPiece->color).')"/>'."\n";
+			return '<img src="'.$this->sPiecePath.$sName.'" alt="'.$this->oNotation->getPieceLetter($oPiece->type, $oPiece->color).'" title="'.ucwords($oPiece->type).' ('.$this->oNotation->getPieceLetter($oPiece->type, $oPiece->color).')"/>'."\n";
 		}
 		
 		/**
