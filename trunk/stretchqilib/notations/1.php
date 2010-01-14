@@ -60,6 +60,43 @@
 			);
 		
 		/**
+	  * positions to labels for each color
+	  *
+		* @var array
+		*/
+	  var $aPositions = array(
+	    'row' => array(
+	      'Black' => array(
+	        '1',
+	        '2',
+	        '3',
+	        '4',
+	        '5',
+	        '6',
+	        '7',
+	        '8',
+	        '9',
+	        '10'),
+	      'Red' => array(
+	        '10',
+	        '9',
+	        '8',
+	        '7',
+	        '6',
+	        '5',
+	        '4',
+	        '3',
+	        '2',
+	        '1'),
+	      ),
+	    'col' => array(
+	      'Black' => array('1','2','3','4','5','6','7','8','9'),
+	      'Red'   => array('9','8','7','6','5','4','3','2','1')
+	      )
+	    );
+	   
+		
+		/**
 		* split the notation text into indivual moves
 		* @param text
 		* @return array
@@ -140,7 +177,7 @@
 		* @param string
 		* @return string
 		*/
-		function getLabel($sAxis, $iPos, $sColor = "Black")
+		/*function getLabel($sAxis, $iPos, $sColor = "Black")
 		{
 		  if($sColor == 'Black')
 		  {
@@ -157,7 +194,7 @@
           return 9 - $iPos;
         }
       }
-		}
+		}*/
 		
 		/**
 		* get stretchqi postion value for this notations label of a position along a row or coloum for a color
@@ -166,7 +203,7 @@
 		* @param string
 		* @return string
 		*/
-		function getPos($sAxis, $sLabel, $sColor = "Black")
+		/*function getPos($sAxis, $sLabel, $sColor = "Black")
 		{
 		  if($sColor == 'Black')
 		  {
@@ -183,5 +220,5 @@
           return 9 - $sLabel;
         }
       }
-		}
+		}*/
 	}
