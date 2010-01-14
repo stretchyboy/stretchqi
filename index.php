@@ -43,23 +43,18 @@
   //$sText = "C (32)–35, H (18)–37";
 
   $sText = "Ch3-e3, Hh10-g8";
-
-
-$sNotation = 'sensible';
-
-
+  
+  $sNotation = 'sensible';
   
   if($_GET['moves'])
   {
     $sText = $_GET['moves'];
   }
   
-  
   if($_GET['notation'])
   {
     $sNotation = $_GET['notation'];
   }
-  
   
   require_once('stretchqilib/xiangqi.php');
   
@@ -82,13 +77,16 @@ $sNotation = 'sensible';
   <body>
   
   <form>
-  <select value="<?=$sNotation;?>" name="notation"><option value="1">Notional System 1</option>
-  <option value="1a">Notional System 1 with English Peice letters</option>
-  </select>
-  <br />
-  <textarea name="moves"><?=$sText;?></textarea>
-  <br />
-  <input type="submit" />
+    <select value="<?=$sNotation;?>" name="notation">
+      <option value="1" <?=($sNotation=='1'?'selected="true"':'');?>>Notional System 1</option>
+      <option value="1a" <?=($sNotation=='1a'?'selected="true"':'');?>>Notional System 1 with English Peice letters</option>
+      <option value="western" <?=($sNotation=='western'?'selected="true"':'');?>>Western notation with English Peice letters</option>
+      <option value="sensible" <?=($sNotation=='sensible'?'selected="true"':'');?>>Sensible notation with English Peice letters</option>
+    </select>
+    <br />
+    <textarea name="moves"><?=$sText;?></textarea>
+    <br />
+    <input type="submit" />
   </form>
   
   <?=$sBoard;?>
