@@ -63,7 +63,41 @@
 			"soldier"     => array('S','S'),
 			);
 		
-		
+		/**
+	  * positions to labels for each color
+	  *
+		* @var array
+		*/
+	  var $aPositions = array(
+	    'row' => array(
+	      'Black' => array(
+	        '10',
+	        '9',
+	        '8',
+	        '7',
+	        '6',
+	        '5',
+	        '4',
+	        '3',
+	        '2',
+	        '1'),
+	      'Red' => array(
+	        '10',
+	        '9',
+	        '8',
+	        '7',
+	        '6',
+	        '5',
+	        '4',
+	        '3',
+	        '2',
+	        '1'),
+	      ),
+	    'col' => array(
+	      'Black' => array('a','b','c','d','e','f','g','h','i'),
+	      'Red'   => array('a','b','c','d','e','f','g','h','i')
+	      )
+	    );
 		
 		/**
 		* split the notation text into indivual moves
@@ -72,14 +106,35 @@
 		*/
 		function splitMoveText($sText)
 		{
-		  throw('Yet to be implemented for western notation');
+		  $sText  = str_replace('–', '-', $sText);
+		  $sText  = str_replace("\r", '', $sText);
+		  $aLines = split("\n", $sText);
+		  $aTexts = array();
+		  foreach($aLines as $sLine)
+		  {
+		    $sLine = trim($sLine);
+		    if($sLine)
+		    {
+		      $aParts = split(' ', $sLine);
+		      if($aParts[0])
+		      {
+		        $aTexts[] = trim($aParts[0]);
+		      }
+		      
+		      if(trim($aParts[1]))
+		      {
+		        $aTexts[] = trim($aParts[1]);
+		      }
+		    }
+		  }
+		  return $aTexts;
 		}
 		
 		/**
 		* create the move object for a text move for a color
 		* @param string
 		* @param string
-		* @reparaturn object move
+		* @return object move
 		*/
 		function parseMove($sText, $sColor)
 		{
@@ -92,30 +147,6 @@
 		* @return string
 		*/
 		function getText($oMove)
-		{
-		  throw('Yet to be implemented for western notation');
-		}
-		
-		/**
-		* get this notations label for a position along a row or coloum for a color
-		* @param string
-		* @param int
-		* @param string
-		* @return string
-		*/
-		function getLabel($sAxis, $iPos, $sColor = "Black")
-		{
-		  throw('Yet to be implemented for western notation');
-		}
-		
-		/**
-		* get stretchqi postion value for this notations label of a position along a row or coloum for a color
-		* @param string
-		* @param int
-		* @param string
-		* @return string
-		*/
-		function getPos($sAxis, $sLabel, $sColor = "Black")
 		{
 		  throw('Yet to be implemented for western notation');
 		}

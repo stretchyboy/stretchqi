@@ -44,24 +44,21 @@
 	  *
 		* @var array
 		*/
-	  var $aPieces = array(
-		  "chariot"  => array('車','俥'), //,  Black first
-		  "horse"    => array('馬','傌'),
-			//"horse"    => array('馬','馬'), //Second traditional notation from wikipedia other red is 傌
-			"elephant" => array('象','相'),
-			"advisor"  => array('士','仕'),
-			"general"  => array('將','帥'),
-			"cannon"   => array('砲','炮'),
-			"soldier"  => array('卒','兵'),
-			);
+	  var $aPieces = array();
 		
 		/**
 		* local copy of pieces reindexed by color then character
 		* @var array
 		*/
-		var $aPieceNames;
-
-			
+		var $aPieceNames = array();
+		
+		/**
+	  * positions to labels for each color
+	  *
+		* @var array
+		*/
+	  var $aPositions = array();
+	  
 		function __construct()
 		{
 		  $this->aPieceNames = array(
@@ -150,7 +147,11 @@
 		*/
 		function getLabel($sAxis, $iPos, $sColor = "Black")
 		{
-		  throw('Notation Base class must be extended');
+		  if($sAxis == 'column')
+		  {
+		    $sAxis = 'col';
+		  }
+		  return $this->aPositions[$sAxis][$sColor][$iPos];
 		}
 		
 		/**
@@ -162,6 +163,10 @@
 		*/
 		function getPos($sAxis, $sLabel, $sColor = "Black")
 		{
-		  throw('Notation Base class must be extended');
+		  if($sAxis == 'column')
+		  {
+		    $sAxis = 'col';
+		  }
+		  return array_search($sLabel, $this->aPositions[$sAxis][$sColor]);
 		}
 	}
