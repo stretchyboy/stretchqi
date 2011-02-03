@@ -23,6 +23,8 @@
  * @version SVN: $Rev$ $Date$
  * @link http://stretchqi.googlecode.com
  */
+
+#hi steve
  
   require_once('western.php');  
   
